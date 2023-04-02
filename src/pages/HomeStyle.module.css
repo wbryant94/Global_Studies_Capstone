@@ -1,0 +1,48 @@
+.container {
+    height: auto;
+    padding: 20px;
+    flex: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.welcome { 
+    text-align: center;
+    padding: 20px;
+    background-color: var(--white);
+    font-size: 20px;
+    border-radius: 10px;
+    box-shadow: 5px 8px;
+}
+
+p{
+    color: black;
+}
+
+
+.about { 
+    color: var(--white);
+    font-size: small;
+}
+
+
+
+.details { 
+align-items: center;
+}
+
+.mapping {
+    padding: 20px;
+    margin-top: 5px;
+    background-color: var(--white);
+    border-radius: 20px;
+}
+
+.resources { 
+    justify-content: center;
+    padding: 20px;
+    margin-top: 5px;
+    background-color: var(--white);
+    border-radius: 20px;
+}

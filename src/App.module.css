@@ -1,0 +1,22 @@
+:root {
+  --blue: #007bff;
+  --softBlue: #809fff;
+  --secondaryBlue: #2f328e;
+  --white: #fff;
+  
+}
+.app {
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top center;
+}
+
+.container { 
+  width: 1024px;
+  height: 100vh;
+  background-color: var(--blue);
+
+}

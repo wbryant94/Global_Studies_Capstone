@@ -1,24 +1,81 @@
-import logo from './logo.svg';
-import './App.css';
+import { 
+  createBrowserRouter, 
+  Outlet, 
+  RouterProvider 
+} from "react-router-dom";
+
+import Register from './pages/Register'
+import Login from "./pages/Login";
+import AddResource from "./pages/AddResource";
+import SingleCountry from "./pages/SingleCountry";
+import Resources from "./pages/Resources";
+import Home from "./pages/Home";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import AppStyle from './App.module.css'
+import backgroundImage from './img/static/fun_map.jpg'
+import WorldMap from "./components/Map/WorldMap";
+
+
+/* import './style.scss' */
+
+
+const Layout = () => { 
+  return (
+    <>
+      <Navbar />
+      <Outlet />
+      <Footer />
+    </>
+  );
+};
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/add",
+        element: <AddResource />,
+      },
+      {
+        path: "/resource/:id",
+        element: <SingleCountry />,
+      },
+    ],
+  },
+  {
+    path: "/login",
+    element: <Login></Login>,
+  },
+  {
+    path: "/register",
+    element: <Register></Register>,
+  },
+  {
+    path: "/resources",
+    element: <Resources />,
+  },
+  {
+    path: "/map",
+    element: <WorldMap />,
+  },
+
+]);
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <div className={AppStyle.app} style={{backgroundImage: `url(${backgroundImage})` }}>
+      <div className={AppStyle.container} >
+          <RouterProvider router={router} />
+        </div>
+      </div>
+    
   );
 }
 
