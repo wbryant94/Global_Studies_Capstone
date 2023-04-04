@@ -6,6 +6,9 @@ import { Button, Grid } from "@mui/material";
 
 
 
+
+
+
 const Resources = () => {
   const [resources, setResources] = useState([]);
 
@@ -26,7 +29,7 @@ const Resources = () => {
     fetchData();
   }, []);
 
-  console.log(resources);
+
 
   return (
     <>

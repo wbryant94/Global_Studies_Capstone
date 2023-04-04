@@ -50,7 +50,7 @@ const Login = () => {
           name="password"
           onChange={handleChange}
         />
-        <button onClick={handleSubmit} className={AuthStyles.loginButton}>Login</button>
+        <button onClick={handleSubmit} className={AuthStyles.link}>Login</button>
         <Link to="/register" className={AuthStyles.link}>
           Need to register a new account?
         </Link>

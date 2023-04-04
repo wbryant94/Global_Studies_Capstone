@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Logo from "../img/static/UNCA-logo.png";
 import NavbarStyle from "./Navbar.module.css";
 import { AuthContext } from "../context/AuthContext";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 
 const Navbar = () => {
@@ -16,7 +16,9 @@ const Navbar = () => {
           <img src={Logo} />
         </Link>
       </div>
-      <div className={NavbarStyle.title}>Global Studies Department</div>
+      <div className={NavbarStyle.title}>
+        <Typography gutterBottom> Global Studies Department</Typography>
+      </div>
       {currentUser ? (
         <Link className={NavbarStyle.link} to="/add">
           <h2>

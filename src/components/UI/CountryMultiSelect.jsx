@@ -47,7 +47,6 @@ export default function MultipleSelect(props) {
           input={<OutlinedInput label="Country" />}
           MenuProps={MenuProps}
         >
-          {console.log("attempting to map")}
           {countryList.map((name) => (
             <MenuItem
               key={name}

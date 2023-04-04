@@ -7,7 +7,9 @@ import {
 import Register from './pages/Register'
 import Login from "./pages/Login";
 import AddResource from "./pages/AddResource";
+import Edit from "./pages/Edit";
 import SingleCountry from "./pages/SingleCountry";
+import Professor from "./pages/Professor";
 import Resources from "./pages/Resources";
 import Home from "./pages/Home";
 import Navbar from "./components/Navbar";
@@ -60,6 +62,15 @@ const router = createBrowserRouter([
   {
     path: "/resources",
     element: <Resources />,
+  },
+
+  {
+    path: "/resources/edit",
+    element: <Edit />,
+  },
+  {
+    path: "/resources/:id",
+    element: <Professor />,
   },
   {
     path: "/map",

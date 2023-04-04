@@ -16,6 +16,13 @@
     box-shadow: 5px 8px;
 }
 
+.tools { 
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    text-decoration: none;
+}
+
 p{
     color: black;
 }
@@ -28,21 +35,22 @@ p{
 
 
 
-.details { 
-align-items: center;
-}
+
 
 .mapping {
     padding: 20px;
     margin-top: 5px;
-    background-color: var(--white);
+    background-color: teal;
     border-radius: 20px;
+    text-decoration: none;
+    color: var(--white);
 }
 
 .resources { 
     justify-content: center;
     padding: 20px;
     margin-top: 5px;
-    background-color: var(--white);
+    background-color: var(--secondaryBlue);
+    color: white;
     border-radius: 20px;
 }
