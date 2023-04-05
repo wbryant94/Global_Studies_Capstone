@@ -8,8 +8,6 @@ import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import { Avatar, ButtonGroup } from "@mui/material";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { CardActionArea } from "@mui/material";
-/* 
-import EditModal from "../UI/EditResourceModal"; */
 import DeleteModal from "../UI/DeleteProfessorModal";
 import axios from "axios";
 import EditIcon from "@mui/icons-material/Edit";
@@ -31,7 +29,7 @@ const Resource = styled(Card)(() => ({
 }));
 
 export default function ResourceCard(props) {
-  const { currentUser, logout } = React.useContext(AuthContext);
+  const { currentUser} = React.useContext(AuthContext);
   const resourceURL = `/resources/${props.data.professor_id}`
 
   return (
@@ -41,12 +39,11 @@ export default function ResourceCard(props) {
         <CardContent>
           <Avatar
             default={<Person2Icon />}
-            sx={{ width: 80, height: 80, padding: 2 }}
+            sx={{ width: 120, height: 120, padding: 2 }}
             src={props.data.image}
           />
-
           <Typography variant="h2" sx={{ fontSize: 24 }} gutterBottom>
-            {props.data.fname}
+            {`${props.data.fname} ${props.data.lname}`}
           </Typography>
           <Typography variant="h5" component="div" gutterBottom>
             {props.data.department}
@@ -72,6 +69,7 @@ export default function ResourceCard(props) {
       {currentUser ? (
         <ButtonGroup sx={{ gap: "10px" }}>
           <Link to="/resources/edit" state={props.data}>
+          Edit Resource
             <EditIcon />
           </Link>
           {/*     <EditModal resource={resourceVals} /> */}

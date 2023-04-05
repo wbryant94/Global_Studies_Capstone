@@ -3,14 +3,24 @@
     align-items: center;
     justify-content: center;
     margin-top: 10px;
+    height: 100%;
+    width: auto;
+}
+
+.message { 
+    text-align: center;
 }
 
 .form { 
-    display: flex;
     align-items: center;
-    justify-content: center;
+    height: 50%;
     gap: 10px;
     box-shadow: 0 3px 5px 2px;
     border: 2px solid black;
     border-radius: 10px;
+}
+
+input { 
+    width: auto;
+    height: auto;
 }

@@ -5,7 +5,6 @@ import globe_picture from "../img/static/little_globe.jpg"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import axios from "axios";
 import {
-  Avatar,
   Card,
   CardContent,
   CardMedia,
@@ -13,7 +12,6 @@ import {
   List,
   ListItem,
   ListItemAvatar,
-  ListItemText,
   Typography,
 } from "@mui/material";
 import styled from "@emotion/styled";
@@ -27,6 +25,7 @@ const ResourceDisplay = styled(Card)(() => ({
   color: "black",
   boxShadow: "0 3px 5px 2px",
   justifyContent: "center",
+  width: "auto",
 
   ":hover": {
     color: "teal",
@@ -52,12 +51,12 @@ const EditResource = (props) => {
     const fetchData = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:8800/api/resources/" + professor_id
+          "http://localhost:8800/api/resources/professor/" + professor_id
         );
-
+        console.log("res: ",res)
         setCountry(
           res.data.map((item) => {
-            return item.country;
+            return item.name;
           })
         );
       } catch (err) {
@@ -74,7 +73,7 @@ const EditResource = (props) => {
     <>
       <ResourceDisplay>
       <Link to="/resources"> 
-      <ArrowBackIcon />
+      <ArrowBackIcon sx={{fontSize: "40px"}}/>
       </Link>
         <CardContent>
           <Typography gutterBottom variant="h2">
@@ -100,18 +99,18 @@ const EditResource = (props) => {
             style={{
               width: 'auto',
               height: 'auto',
-              paddingTop: "56%",
+              justifyContent: "center",
+              paddingTop: "60%",
             }}
             image={inputs.image}
           />  
       </Card>
       <Grid container spacing={10} sx={{ justifyContent: "center", flexDirection: "row" }}>
-        <Grid xs={8} s={6} >
+        <Grid xs={3} s={6}>
           <Typography
             sx={{
               mt: 4,
               mb: 2,
-              backgroundColor: "teal",
               textAlign: "center",
               justifyContent: "center",
               alignItems: "center",
@@ -119,13 +118,14 @@ const EditResource = (props) => {
             variant="h4"
             component="div"
           >
-            Countries & Connections
+            <ResourceDisplay sx={{display: "flex", mt: 10}}>Countries & Connections </ResourceDisplay>
           </Typography>
+          {country.length >= 1 ? (  
           <List
             sx={{
               backgroundColor: "white",
               boxShadow: "0 3px 5px 2px",
-              backgroundImage: `url(${globe_picture})` 
+              width: "auto",
             }}
           >
             <ListItem>
@@ -141,6 +141,14 @@ const EditResource = (props) => {
               </ListItemAvatar>
             </ListItem>
           </List>
+          ) : (
+          
+           <ResourceDisplay>
+            No Countries / Connections To Display
+           </ResourceDisplay>
+          
+          )
+          }
         </Grid>
       </Grid>
     </>

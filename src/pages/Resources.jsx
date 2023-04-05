@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import ResourceCard from "../components/Resource/ResourceCard";
-import { Button, Grid } from "@mui/material";
+import { Button, Card, Grid } from "@mui/material";
 
 
 
@@ -44,17 +44,20 @@ const Resources = () => {
           ))}
         </Grid>
       </Grid>
-      <Link to="/">
-        <Button
+               <Link to="/">
+        <Card
           variant="outlined"
           sx={{
             color: "purple",
             background: "white",
             alignContent: "center",
+            display: "flex",
+            justifyContent: "center",
+            zIndex: 400
           }}
         >
           HOME
-        </Button>
+        </Card>
       </Link>
     </>
   );

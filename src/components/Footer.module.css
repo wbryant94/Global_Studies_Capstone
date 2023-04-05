@@ -1,14 +1,13 @@
 
 .footer {
-  margin-top: 100px;
   padding: 20px;
   background-color: var(--white);
-  display: flex;
+  justify-content: baseline;
+  display:flex;
   align-items:center;
   font-family: 'Roboto', sans-serif;
   border: 2px black solid;
   border-radius: 5px;
-  height: auto;
 }
 
 .message {

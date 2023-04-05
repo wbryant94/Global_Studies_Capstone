@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 const card = (
   <React.Fragment>
     <CardContent
-      sx={{ position: "fixed", bottom: "10%", left: "20%", zIndex: 9999 }}
+      sx={{ position: "fixed", bottom: "10%", left: "0%", zIndex: 9999 }}
     >
       <Typography variant="h6" component="div">
         UNCA Global Studies - Resource Visualization Application
@@ -21,11 +21,13 @@ const card = (
       >
         Fostering a sense of awareness of UNCA's connections across the globe.
       </Typography>
-      <Typography variant="body2">
+      <Typography variant="h5">
         Learn more about the department{" "}
         <a href="https://globalstudies.unca.edu/home/">click here </a>
         <Link to="/">
-          <h1>Home</h1>
+          <Typography variant="h5">
+            Home
+          </Typography>
         </Link>
       </Typography>
     </CardContent>
@@ -34,8 +36,8 @@ const card = (
 
 export default function OutlinedCard() {
   return (
-    <Box sx={{ minWidth: 275 }}>
-      <Card variant="outlined">{card}</Card>
+    <Box sx={{ minWidth: 275, }}>
+      <Card variant="outlined" sx={{color: "white"}}>{card}</Card>
     </Box>
   );
 }

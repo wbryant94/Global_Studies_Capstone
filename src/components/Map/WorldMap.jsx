@@ -40,13 +40,18 @@ const WorldMap = (props) => {
     layer.on({
       click: (event) => {
         console.log(event.target.feature.properties.ADMIN);
+        event.target.setStyle({
+          fillColor: "blue",
+          fillOpacity: 0.65,
+        });
       },
     });
   };
 
   const { BaseLayer } = LayersControl;
 
-  return (
+  return ReactDOM.createPortal(
+
     <MapContainer
       center={[10, 10]}
       style={{ height: "100vh" }}
@@ -77,7 +82,7 @@ const WorldMap = (props) => {
         </BaseLayer>
       </LayersControl>
     </MapContainer>
-  );
+  , (document.getElementById('modalPortal')));
 };
 
 export default WorldMap;

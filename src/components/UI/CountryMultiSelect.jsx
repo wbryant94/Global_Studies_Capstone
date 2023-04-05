@@ -6,6 +6,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { countryArray } from "../../data/countryArray";
+import axios from "axios";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -28,32 +29,47 @@ function getStyles(name, countryName, theme) {
 }
 
 export default function MultipleSelect(props) {
+  const [countryOptions, setCountryOptions] = React.useState([]);
+
+  //get countries to select from //
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:8800/api/resources/countries"
+        );
+        setCountryOptions([...res.data]);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, []);
+
   const theme = useTheme();
-  let countryList = [...new Set(countryArray)];
 
   return (
     <div>
-      <FormControl sx={{ m: 2, width: 200 }}>
+      <FormControl sx={{ m: 2, width: "auto", minWidth: 180 }}>
         <InputLabel id="demo-multiple-name-label">
           Selected Countries
         </InputLabel>
         <Select
           labelId="multiple-name-label"
           id="multiple-name"
-          required
           multiple
           value={[...props.countryName]}
           onChange={props.onChange}
           input={<OutlinedInput label="Country" />}
           MenuProps={MenuProps}
         >
-          {countryList.map((name) => (
+          {countryOptions.map((country) => (
             <MenuItem
-              key={name}
-              value={name}
-              style={getStyles(name, props.countryName, theme)}
+              key={country.country_id}
+              value={country}
+              style={getStyles(country.name, props.countryName, theme)}
             >
-              {name}
+              {country.name}
             </MenuItem>
           ))}
         </Select>

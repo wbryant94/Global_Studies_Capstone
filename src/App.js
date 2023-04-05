@@ -15,7 +15,7 @@ import Home from "./pages/Home";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import AppStyle from './App.module.css'
-import backgroundImage from './img/static/fun_map.jpg'
+import backgroundImage from './img/static/dark_world_map.jpg'
 import WorldMap from "./components/Map/WorldMap";
 
 
