@@ -1,20 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation} from "react-router-dom";
 import PublicIcon from "@mui/icons-material/Public";
-import globe_picture from "../img/static/little_globe.jpg"
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import globe_picture from "../img/static/little_globe.jpg";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import axios from "axios";
-import {
-  Card,
-  CardContent,
-  CardMedia,
-  Grid,
-  List,
-  ListItem,
-  ListItemAvatar,
-  Typography,
-} from "@mui/material";
+import { Card, CardContent, CardMedia, Grid, Typography } from "@mui/material";
 import styled from "@emotion/styled";
+import { Box } from "@mui/system";
 
 const ResourceDisplay = styled(Card)(() => ({
   margin: 10,
@@ -39,7 +31,7 @@ TODO: Implement duplicate checks on the backend for professors
  */
 
 // Initial form adds professor, resource entry requires prof id (FK )
-const EditResource = (props) => {
+const Professor = (props) => {
   const location = useLocation();
   const propsData = location.state;
   const professor_id = propsData.professor_id;
@@ -53,7 +45,6 @@ const EditResource = (props) => {
         const res = await axios.get(
           "http://localhost:8800/api/resources/professor/" + professor_id
         );
-        console.log("res: ",res)
         setCountry(
           res.data.map((item) => {
             return item.name;
@@ -66,47 +57,56 @@ const EditResource = (props) => {
     fetchData();
   }, []);
 
-  console.log("professor inputs : ", inputs);
-  console.log("professor countries :", country);
-
   return (
-    <>
+    <Box>
       <ResourceDisplay>
-      <Link to="/resources"> 
-      <ArrowBackIcon sx={{fontSize: "40px"}}/>
-      </Link>
         <CardContent>
-          <Typography gutterBottom variant="h2">
-            {`${inputs.fname} ${inputs.lname}`}
-          </Typography>
-          <Typography variant="h3" color="text.primary">
-            {`${inputs.department}`}
-          </Typography>
-          <CardMedia></CardMedia>
+          <Link to="/resources">
+            <ArrowBackIcon sx={{ fontSize: "40px" }} />
+          </Link>
+          <CardContent>
+            <Typography gutterBottom variant="h2">
+              {`${inputs.fname} ${inputs.lname}`}
+            </Typography>
+            <Typography variant="h3" color="text.primary" gutterBottom>
+              {`${inputs.department}`}
+            </Typography>
+          </CardContent>
+
+          <Card>
+            <Typography
+              variant="h6"
+              color="text.secondary"
+              gutterBottom
+              sx={{
+                margin: "10px",
+                padding: "10px",
+              }}
+            >
+              {`${inputs.description}`}
+            </Typography>
+          </Card>
+          <Card>
+            <CardMedia
+              style={{
+                width: "auto",
+                height: "auto",
+                justifyContent: "center",
+                paddingTop: "60%",
+              }}
+              image={inputs.image}
+            />
+          </Card>
         </CardContent>
       </ResourceDisplay>
-      <Card>
-        <Typography variant="h6" color="text.secondary" gutterBottom sx={{
-            margin: "10px",
-            padding: "10px"
-            
-        }}>
-          {`${inputs.description}`}
-        </Typography>
-      </Card>
-      <Card>
-      <CardMedia
-            style={{
-              width: 'auto',
-              height: 'auto',
-              justifyContent: "center",
-              paddingTop: "60%",
-            }}
-            image={inputs.image}
-          />  
-      </Card>
-      <Grid container spacing={10} sx={{ justifyContent: "center", flexDirection: "row" }}>
-        <Grid xs={3} s={6}>
+      <Grid
+        container
+        spacing={10}
+        sx={{ justifyContent: "center", flexDirection: "row" }}
+      >
+        <Grid
+        item
+        xs={8} >
           <Typography
             sx={{
               mt: 4,
@@ -114,45 +114,37 @@ const EditResource = (props) => {
               textAlign: "center",
               justifyContent: "center",
               alignItems: "center",
+              flexWrap: "true",
             }}
             variant="h4"
             component="div"
           >
-            <ResourceDisplay sx={{display: "flex", mt: 10}}>Countries & Connections </ResourceDisplay>
+            <ResourceDisplay sx={{ display: "flex", mt: 10 }}>
+              Countries & Connections{" "}
+            </ResourceDisplay>
           </Typography>
-          {country.length >= 1 ? (  
-          <List
-            sx={{
-              backgroundColor: "white",
-              boxShadow: "0 3px 5px 2px",
-              width: "auto",
-            }}
-          >
-            <ListItem>
-              <ListItemAvatar>
-                {country.map((country) => {
-                  return (
-                    <ResourceDisplay>
-                      {country}
-                      <PublicIcon />
-                    </ResourceDisplay>
-                  );
-                })}
-              </ListItemAvatar>
-            </ListItem>
-          </List>
+          {country.length >= 1 ? (
+            <div>
+              {country.map((country) => { 
+                return (
+                  <ResourceDisplay 
+                  key={country.country_id}
+                  >
+                    {country}
+                    <PublicIcon />
+                  </ResourceDisplay>
+                );
+              })}
+            </div>
           ) : (
-          
-           <ResourceDisplay>
-            No Countries / Connections To Display
-           </ResourceDisplay>
-          
-          )
-          }
+            <ResourceDisplay>
+              No Countries / Connections To Display
+            </ResourceDisplay>
+          )}
         </Grid>
       </Grid>
-    </>
+    </Box>
   );
 };
 
-export default EditResource;
+export default Professor;

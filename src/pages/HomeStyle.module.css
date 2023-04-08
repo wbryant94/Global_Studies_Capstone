@@ -5,6 +5,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    background-color: teal;
 }
 
 .welcome { 
@@ -40,10 +41,11 @@ p{
 .mapping {
     padding: 20px;
     margin-top: 5px;
-    background-color: teal;
+    background-color: var(--secondaryBlue);
     border-radius: 20px;
     text-decoration: none;
     color: var(--white);
+    box-shadow: "0 3px 5px 2px";
 }
 
 .resources { 
@@ -53,4 +55,5 @@ p{
     background-color: var(--secondaryBlue);
     color: white;
     border-radius: 20px;
+    box-shadow: "0 3px 5px 2px";
 }

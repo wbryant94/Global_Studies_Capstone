@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { countryArray } from "../data/countryArray.js";
 import { UNCADepartmentsArray } from "../data/UNCADepartmentsArray.js";
-import MultiSelect from "../components/UI/CountryMultiSelect";
+import CountryMultiSelect from "../components/UI/CountryMultiSelect";
 import Select from "react-select";
 import AddResourceStyle from "./AddResourceStyle.module.css";
-import { Card, Typography } from "@mui/material";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-
+import { Card, InputLabel, Typography } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import TextArea from "antd/es/input/TextArea.js";
+import Alert from "@mui/material/Alert";
 
 
 /* In order to populate both the resource and professor tables, the professor is created so that the 
@@ -25,8 +25,10 @@ const EditResource = (props) => {
 
   // for professor add
   const [inputs, setInputs] = useState({ ...propsData });
-  const [country, setCountry] = useState([]);
-
+  const [countries, setCountries] = useState([]);
+  const [err, setErr] = useState(null);
+  const [success, setSuccess] = useState(false);
+  /*   const [file, setFile] = useState(null); */
 
   // For React-select for departments
   const [isSearchable, setIsSearchable] = useState(true);
@@ -37,77 +39,104 @@ const EditResource = (props) => {
         const res = await axios.get(
           "http://localhost:8800/api/resources/professor/" + professor_id
         );
-        console.log("res",res.data)
-        setCountry(
-          
-          res.data.map((item) => {
-            return (item);
-          })
+        // ^ Gets Professor / country connections by professor_id //
+        setCountries(
+          res.data.map((country) => ({
+            value: country.country_id,
+            label: country.name,
+          }))
         );
       } catch (err) {
-        console.log(err);
+        console.log("Error: ", err);
       }
     };
     fetchData();
   }, []);
 
+  /* 
+  TO DO - ADD IMAGE UPLOADING FOR HEADSHOTS 
+  const upload = async () => {
+    try {
+      const formData = new FormData();
+      formData.set("file", file);
+      const res = await axios.post("/upload", formData);
+      return res.data;
+    } catch (err) {
+      console.log(err);
+    }
+  }; */
+
   const handleChange = (e) => {
-    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setInputs((prev) => ({ ...prev, description: e.target.value }));
   };
 
+
+
   const handleCountryChange = (e) => {
-    setCountry(e.target.value);
+    setCountries(e);
   };
 
   const handleDepartmentChange = (option) => {
     setInputs((prev) => ({ ...prev, department: option.value }));
-    console.log("updated department: ", inputs);
     /*    
     setInputs({department: option.value }) */
   };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log("inputs sent:",inputs);
-    console.log("countries sent:",country);
-    //TO DO - update Date on backend.
-     const date = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")
+    console.log("inputs sent:", inputs);
+    console.log("countries sent:", countries);
 
     try {
-  
       const res = await axios.put(
-        "http://localhost:8800/api/resources/professor/" + professor_id,inputs
-         
-      ).then(await axios.put(
-        "http://localhost:8800/api/resources/"+ professor_id, {...country, professor_id}
-      ));
-    } catch (err) {
-      console.log(err);
-    }
+        "http://localhost:8800/api/resources/professor/" + professor_id,
+        inputs
+      );
 
-    setInputs({
-      fname: "",
-      lname: "",
-      department: "",
-      description: "",
-      email: "",
-      image: "",
-    });
-    setCountry([])
+      await axios.put("http://localhost:8800/api/resources/" + professor_id, {
+        countries,
+        professor_id,
+      });
+    } catch (err) {
+      console.log("error: ", err.response.data.message);
+      alert(`Error: ${err.response.data.message}`);
+      return;
+    }
+    setSuccess(true);
+
+    setTimeout(() => {
+      console.log("Delayed for 4 second.");
+      setErr(null);
+      setSuccess(false)
+    }, 4000);
   };
+
 
   return (
     <>
-      <Card sx={{ justifyContent: "center", textAlign: "center" }}>
-      <Link to="/resources"> 
-      <ArrowBackIcon sx={{fontSize: "40px"}}/>
-      </Link>
-        <Typography variant="h3" color="text.primary">
-          Edit Professor Details / Connections
-        </Typography>
-      </Card>
       <div className={AddResourceStyle.add}>
-        <form onSubmit={handleFormSubmit} className={AddResourceStyle.form}>
+        <Card
+          sx={{
+            justifyContent: "center",
+            textAlign: "center",
+            m: 10,
+            padding: 10,
+          }}
+        >
+          <Link to="/resources">
+            <ArrowBackIcon sx={{ fontSize: "40px" }} />
+          </Link>
+          <Typography variant="h6" color="text.primary">
+            Edit Professor Details / Connections
+            {success && (
+  <Alert severity="success">
+    Successfull Added Professor and Connections!{" "}
+  </Alert>
+)}
+          </Typography>
+        </Card>
+       
+        <form onSubmit={handleFormSubmit}>
           <label>First Name</label>
           <input
             type="text"
@@ -131,6 +160,8 @@ const EditResource = (props) => {
             className="basic-single"
             classNamePrefix="select"
             defaultValue=""
+            placeholder={inputs.department}
+            label="test"
             isSearchable={isSearchable}
             options={UNCADepartmentsArray}
             onChange={handleDepartmentChange}
@@ -138,22 +169,28 @@ const EditResource = (props) => {
             autoFocus={true}
             menuPortalTarget={document.body}
             styles={{
-              menuPortal: (base) => ({ ...base, zIndex: 401, minWidth: 200 }),
+              menuPortal: (base) => ({ ...base, zIndex: 401, minWidth: 400 }),
             }}
           />
-          <input
-            type="text"
+          <InputLabel>Description</InputLabel>
+          <TextArea
             name="description"
-            placeholder="Description"
+            placeholder="Professor Summary / Description"
             required
             onChange={handleChange}
             value={inputs.description}
+            default=""
+            styles={{
+              maxWidth: 400,
+              padding: 5,
+              margin: 10,
+            }}
+           
           />
           <label>Country Connections</label>
-          <MultiSelect
-            countries={countryArray}
+          <CountryMultiSelect
             onChange={handleCountryChange}
-            countryName={country}
+            value={countries}
           />
           <label>Email</label>
           <input
@@ -169,12 +206,12 @@ const EditResource = (props) => {
             type="text"
             name="image"
             placeholder="photo"
-            required
             onChange={handleChange}
             value={inputs.image}
           />
-          <button type="submit">Submit </button>
+          <button type="submit">Update </button>
         </form>
+        {err && <Card> {err.message}</Card>}
       </div>
     </>
   );

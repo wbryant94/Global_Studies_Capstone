@@ -2,70 +2,109 @@ import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import ReactDOMServer from "react-dom/server";
 import "leaflet/dist/leaflet.css";
-import classes from "./WorldMap.module.css";
 import allCountries from "../../data/countries.json";
 import IntroCard from "./IntroCard.jsx";
+import axios from "axios";
+import ConnectionsModal from "../Resource/ConnectionsModal";
+
+
 
 import {
   MapContainer,
   TileLayer,
   GeoJSON,
   LayersControl,
-  Popup,
-  FeatureGroup,
-  Circle,
 } from "react-leaflet";
 
-const WorldMap = (props) => {
-  const [modal, setModal] = useState(false);
+const WorldMap = () => {
+  const [connectedCountries, setConnectedCountries] = useState([]);
+  const [activeCountry, setActiveCountry] = useState([])
+  const [activeCountryName, setActiveCountryName] = useState("")
+  const [open, setOpen] = useState(false);
 
-  const Popup = ({ feature }) => {
-    let popupContent;
-    if (feature.properties && feature.properties.popupContent) {
-      popupContent = feature.properties.popupContent;
-    }
+
+
+  const handleClickOpen = () => {
+    setOpen(true);
   };
 
-  // wait for click on a country and display ResourceList modal according to data belonging to that country
-  const [showResources, setShowResources] = useState(false);
+  const handleClose = (value) => {
+    setOpen(false);
+  };
 
-  let countryList = [];
+   React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:8800/api/resources/map/connections/"
+        );
+        setConnectedCountries(res.data);
+
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, []);
+ 
   const forEachCountry = (country, layer) => {
-    const countryTitle = country.properties.ADMIN;
-    countryList.push(countryTitle);
-
-    layer.bindPopup(ReactDOMServer.renderToString(country.properties.ADMIN));
-
+    let countryName = country.properties.ADMIN;
+    layer.bindPopup(country.properties.ADMIN);
+/*     console.log("connections length: ",connectedCountries.length) */
     // Toggle country to be UNCA color upon a click event //
-    layer.on({
+
+  layer.on({
       click: (event) => {
-        console.log(event.target.feature.properties.ADMIN);
-        event.target.setStyle({
-          fillColor: "blue",
-          fillOpacity: 0.65,
-        });
+
+        //filter based on countryName, return 
+        const filteredConnections = connectedCountries.filter((item) => item.name === countryName);
+        setActiveCountry(filteredConnections) 
+        setActiveCountryName(countryName)
+        handleClickOpen()
+        
+        
+        /* event.target.setStyle({
+         
+        }); */
       },
     });
   };
 
+  const style = (feature) => {
+    const countryNames = connectedCountries.map(country=> country.name)
+    const included = countryNames.includes(feature.properties.ADMIN)
+
+    return {
+      opacity: .6,
+        fillColor: included ? "blue" : "white" ,
+        fillOpacity: included ? 0.65 : .45,
+        
+        
+    };
+};
+ 
+
   const { BaseLayer } = LayersControl;
 
   return ReactDOM.createPortal(
-
-    <MapContainer
+    <> 
+    {connectedCountries.length>0 && <MapContainer
       center={[10, 10]}
-      style={{ height: "100vh" }}
+      style={{ height: "100vh"}}
       zoom={3}
       minZoom={3}
       maxZoom={8}
       scrollWheelZoom={true}
     >
       <IntroCard />
+
       <GeoJSON
-        style={classes.countryStyling}
+        style={style}
         data={allCountries.features}
         onEachFeature={forEachCountry}
-      ></GeoJSON>
+      >
+      </GeoJSON>
+      <ConnectionsModal open={open} selectedValue={activeCountry} onClose={handleClose} title={activeCountryName} />
       <LayersControl>
         <BaseLayer checked name="OpenStreetMap">
           <TileLayer
@@ -79,10 +118,14 @@ const WorldMap = (props) => {
             attribution="&copy; NASA Blue Marble, image service by OpenGeo"
             maxNativeZoom={8}
           />
+
         </BaseLayer>
       </LayersControl>
     </MapContainer>
-  , (document.getElementById('modalPortal')));
+    }
+    </>
+  , (document.getElementById('modalPortal'))
+  )
 };
 
 export default WorldMap;

@@ -1,6 +1,7 @@
 
 
 export const UNCADepartmentsArray = [
+{value: "All Departments", label: "All Departments"},
 { value: "Accounting", label: "Accounting"},
 { value: "Africana Studies", label: "Africana Studies"},
 { value: "American Indian and Indigenous Studies", label: "American Indian and Indigenous Studies"},

@@ -12,15 +12,18 @@ import DeleteModal from "../UI/DeleteProfessorModal";
 import axios from "axios";
 import EditIcon from "@mui/icons-material/Edit";
 import { AuthContext } from "../../context/AuthContext";
+import { blueGrey, lightBlue } from "@mui/material/colors";
 
 const Resource = styled(Card)(() => ({
   margin: 10,
   variant: "outlined",
-  backgroundColor: "white",
+  backgroundColor: lightBlue[100],
   padding: 8,
   textAlign: "center",
   color: "black",
   boxShadow: "0 3px 5px 2px",
+  justifyContent: "center",
+  minWidth: "auto",
 
   ":hover": {
     color: "teal",
@@ -39,10 +42,10 @@ export default function ResourceCard(props) {
         <CardContent>
           <Avatar
             default={<Person2Icon />}
-            sx={{ width: 120, height: 120, padding: 2 }}
+            sx={{ width: 240, height: 240, padding: 2 }}
             src={props.data.image}
           />
-          <Typography variant="h2" sx={{ fontSize: 24 }} gutterBottom>
+          <Typography variant="h2" sx={{ fontSize: 40 }} gutterBottom>
             {`${props.data.fname} ${props.data.lname}`}
           </Typography>
           <Typography variant="h5" component="div" gutterBottom>
@@ -60,7 +63,7 @@ export default function ResourceCard(props) {
           >
             {props.data.description}
           </Typography>
-          <Typography variant="h5" sx={{ fontSize: 24 }} gutterBottom>
+          <Typography variant="h5" sx={{ fontSize: 32 }} gutterBottom>
             {props.data.email}
           </Typography>
         </CardContent>

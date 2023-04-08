@@ -16,30 +16,34 @@ const Navbar = () => {
           <img src={Logo} />
         </Link>
       </div>
-      <div className={NavbarStyle.title}>
-        <Typography gutterBottom> Global Studies Department</Typography>
-      </div>
+
       {currentUser ? (
-        <Link className={NavbarStyle.link} to="/add">
-          <h2>
-            {" "}
-            Add Resources <PersonAddIcon />
-          </h2>
-        </Link>
+        <div className={NavbarStyle.adminTools}>
+          <Link className={NavbarStyle.link} to="/register">
+            <h2>
+              Add New User <PersonAddIcon />
+            </h2>
+          </Link>
+          <Link className={NavbarStyle.link} to="/add">
+            <h2>
+              Add Connections / Professors <PersonAddIcon />
+            </h2>
+          </Link>
+        </div>
       ) : (
         <></>
       )}
-      <span>{currentUser?.fname}</span>
+      <span>
+        <h1> {currentUser ? currentUser.fname : "Welcome"}</h1>
+      </span>
       {currentUser ? (
-        <Link to="/">
-          <Button variant="contained" onClick={logout}>
-            Logout
-          </Button>
+        <Link to="/" className={NavbarStyle.link}>
+          <Button onClick={logout}>Logout</Button>
         </Link>
       ) : (
-        <Button variant="contained">
-          <Link to="/login">Login</Link>
-        </Button>
+        <Link to="/login" className={NavbarStyle.link}>
+          <Button color="secondary">Login</Button>
+        </Link>
       )}
     </div>
   );

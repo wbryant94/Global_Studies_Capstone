@@ -3,12 +3,10 @@ import {
   Outlet, 
   RouterProvider 
 } from "react-router-dom";
-
 import Register from './pages/Register'
 import Login from "./pages/Login";
 import AddResource from "./pages/AddResource";
 import Edit from "./pages/Edit";
-import SingleCountry from "./pages/SingleCountry";
 import Professor from "./pages/Professor";
 import Resources from "./pages/Resources";
 import Home from "./pages/Home";
@@ -46,9 +44,10 @@ const router = createBrowserRouter([
         element: <AddResource />,
       },
       {
-        path: "/resource/:id",
-        element: <SingleCountry />,
+        path: "/resources",
+        element: <Resources />,
       },
+    
     ],
   },
   {
@@ -58,10 +57,6 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register></Register>,
-  },
-  {
-    path: "/resources",
-    element: <Resources />,
   },
 
   {
